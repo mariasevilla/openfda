@@ -5,7 +5,11 @@ headers = {'User-Agent': 'http-client'}
 
 conn = http.client.HTTPSConnection("api.fda.gov")
 
-conn.request("GET", "https://api.fda.gov/drug/label.json?search=openfda:spl_id", None, headers)
+conn.request("GET", "https://api.fda.gov/drug/label.json?search=results.openfda:spl_id&limit=100", None, headers)
 
-r1 = conn.getresponse()
-print(r1)
+id = conn.getresponse()
+
+for i in id:
+    print(i)
+
+print(id)
