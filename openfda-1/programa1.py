@@ -5,11 +5,12 @@ headers = {'User-Agent': 'http-client'}
 
 conn = http.client.HTTPSConnection("api.fda.gov")
 
-conn.request("GET", "/drug/label.json?search=results.openfda:spl_id&limit=100", None, headers)
+conn.request("GET", "/drug/label.json?&limit=1", None, headers)
 
-id = conn.getresponse()
+info = conn.getresponse()
 
-for i in id:
+for i in info:
     print(i)
-
-print(id)
+print(info)
+#print("El medicamento", informacion['results']['0']['id'])
+conn.close()
