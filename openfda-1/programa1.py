@@ -3,14 +3,9 @@ import json
 
 headers = {'User-Agent': 'http-client'}
 
-conn = http.client.HTTPSConnection("https://api.fda.gov/drug/label.json.")
-conn.request("GET", "/drug/label.json.", None, headers)
+conn = http.client.HTTPSConnection("api.fda.gov")
+
+conn.request("GET", "https://api.fda.gov/drug/label.json?search=openfda:spl_id", None, headers)
+
 r1 = conn.getresponse()
-print(r1.status, r1.reason)
-repos_raw = r1.read().decode("utf-8")
-conn.close()
-
-repos = json.loads(repos_raw)
-
-repo = repos[0]
-print("The owner of the first repository is", repo['owner']['login'])
+print(r1)
