@@ -8,12 +8,14 @@ conn = http.client.HTTPSConnection("api.fda.gov")
 conn.request("GET", "/drug/label.json?&limit=1", None, headers)
 
 info = conn.getresponse()
-counter= 0
-#for i in info["results"]["0"]:
-    #counter +=1
-    #print("El id es:", i["results"]["id"])
-    #print(i)
 
-print(info["results"]["0"])
-#print("El medicamento", informacion['results']['0']['id'])
+print(info.status, info.reason)
+drugs_raw = info.read().decode("utf-8")
 conn.close()
+
+drugs = json.loads(drugs_raw)
+
+drug = drugs['results'][0]
+print("El id medicamento es", drug['id'])
+print("El proposito del medicamento es", drug['purpose'])
+print("El fabricante del medicamento es", drug['openfda']['manufacturer_name'])
