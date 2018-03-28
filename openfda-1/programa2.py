@@ -20,3 +20,4 @@ while num < 10:
     drug = drugs['results'][num]
     print("El id medicamento es", drug['id'])
     num +=1
+

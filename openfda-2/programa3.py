@@ -5,7 +5,7 @@ headers = {'User-Agent': 'http-client'}
 
 conn = http.client.HTTPSConnection("api.fda.gov")
 
-conn.request("GET", "/drug/label.json?search=results:inactive_ingredient&limit=100", None, headers)
+conn.request("GET", "/drug/label.json?search=results.active_ingredientlimit=10", None, headers)
 
 info = conn.getresponse()
 
@@ -15,6 +15,6 @@ conn.close()
 
 drugs = json.loads(drugs_raw)
 
-for drug in drugs['results'][num]:
-    if drug["inactive_ingredient"] == "acetylsalicylic acid":
-        print ("drug")
+for drug in drugs['results']:
+    print (drug['openfda']['manufacturer_name'])
+
