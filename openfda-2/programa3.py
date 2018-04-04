@@ -15,10 +15,12 @@ conn.close()
 
 drugs = json.loads(drugs_raw)
 
-print("El nombre del fabricante del medicamento",drugs['results'][0]["id"],"es:",drugs['results'][0]['openfda']['manufacturer_name'])
-print("No se dispone esa de esa información sobre el medicamento",drugs['results'][1]["id"])
-print("El nombre del fabricante del medicamento",drugs['results'][2]["id"],"es:",drugs['results'][2]['openfda']['manufacturer_name'])
-print("No se dispone esa de esa información sobre el medicamento",drugs['results'][3]["id"])
-#for drug in drugs['results']:
-    #print (drug[0]['openfda']['manufacturer_name'])
+
+for drug in drugs['results']:
+    print ("El id del medicamento es:", drug['id'])
+    if drug['openfda']:
+        print("Y el nombre de su fablicante es",drug['openfda']['manufacturer_name'])
+    else:
+        print("Pero no tenemos información sobre su fabricante")
+
 
