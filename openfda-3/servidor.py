@@ -2,7 +2,7 @@ import socket
 
 
 IP = "192.168.1.58"
-PORT = 8000
+PORT = 8008
 MAX_OPEN_REQUESTS = 10
 
 
@@ -26,8 +26,8 @@ def process_client(clientsocket):
 
     num = 0
     while num < 10:
-        drug = drugs['results'][num]
-        id= drug['id']
+        drug = drugs['results'][num]['openfda']
+        name= drug['generic_name']
         num += 1
 
 
@@ -49,7 +49,7 @@ def process_client(clientsocket):
         cabecera += "Content-Length: {}\n".format(len(str.encode(contenido)))
 
 
-        mensaje_respuesta = str.encode(linea_inicial + cabecera + "\n" + contenido+id)
+        mensaje_respuesta = str.encode(linea_inicial + cabecera + "\n" + contenido + name)
         clientsocket.send(mensaje_respuesta)
         clientsocket.close()
 
