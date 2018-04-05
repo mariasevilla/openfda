@@ -60,8 +60,6 @@ serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
 
     serversocket.bind((IP, PORT))
-
-
     serversocket.listen(MAX_OPEN_REQUESTS)
 
 
