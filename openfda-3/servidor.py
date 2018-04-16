@@ -3,7 +3,7 @@ import http.client
 import json
 
 
-IP = "192.168.1.58"
+IP = "212.128.255.132"
 PORT = 8086
 MAX_OPEN_REQUESTS = 10
 
