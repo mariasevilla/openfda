@@ -46,10 +46,11 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         headers = {'User-Agent': 'http-client'}
 
         conn = http.client.HTTPSConnection("api.fda.gov")
-        # con esto nos conectamos a la pagina a la que deseamos acceder. Ponemos limit=1 pues solo queremos la informaciion de un medicamento
+        # con esto nos conectamos a la pagina a la que deseamos acceder. Ponemos limit=100 para que busque en esos 100 primeros medicamentos
 
-        conn.request("GET", "/drug/label.json?&limit=11", None, headers)
-
+        conn.request("GET", "/drug/label.json?search=active_ingredient:value&limit=10&skip", None,
+                     headers)
+        # Guardamos en una variable toda la informacion que el servidor web nos manda al acceder a esa direccion URL
         info = conn.getresponse()
 
         print(info.status, info.reason)
@@ -57,44 +58,24 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         conn.close()
 
         drugs = json.loads(drugs_raw)
-        #if self.path == "/action_page.php?Punto+de+entrada=ListDrugs":
-        def process_client(clientsocket):
-        # Funcion que atiende al cliente. Lee su peticion y le envia un mensaje de respuesta en cuyo contenido hay texto
-        # en HTML que se muestra en el navegador
+        # Decodificamos la informacion y la leemos para guardarla en una nueva variable (drugs)
 
-        # Leemos a traves del socket el mensaje de solicitud del cliente
+        # creamos un bucle para buscar el id y el nobre del fabricante de todos los medicamentos relacionados con las aspirinas.
+        # dentro del bucle usamos if y else para que no de error si algun  medicamento de esos no tiene dicha información
+        contenido =""
+        for drug in drugs['results']:
+            contenido += "El id del medicamento es:"+" "+ str(drug['id'])+ " "
+            if drug['openfda']:
+                contenido += "Y el nombre de su fablicante es"+ " "+ str(drug['openfda']['manufacturer_name'])+ " "  # para buscar el manufacturer_name hay que
+                contenido += "</br>"
+            else:
+                contenido += "Pero no tenemos información sobre su fabricante"
+                contenido += "</br>"
 
-            mensaje_solicitud = clientsocket.recv(1024)
+        self.wfile.write(bytes(contenido, "utf8"))
+        print("File served!")
 
-        # definimos el contenido del mensaje de respuesta
-            contenido = """
-                  <!doctype html>
-                  <html>
-                  <body style='background-color: lightblue'>
-                    <h1>Informacion sobre medicamentos</h2>
-                    <p></p>
-                """
-
-            # este bucle nos permite ir añadiendo al contenido la informacion deseada de los medicamentos (geeric_name)
-            num = 0
-            for drug in drugs['results']:
-
-                num += 1
-                if drug['openfda']:
-                    contenido += drug['openfda']['generic_name'][0]
-                    contenido += """</br></body></html>"""
-
-            # Indicamos primero quetodo OK.
-
-            linea_inicial = "HTTP/1.1 200 OK\n"
-            cabecera = "Content-Type: text/html\n"
-            cabecera += "Content-Length: {}\n".format(len(str.encode(contenido)))
-
-            # creamos el mensaje de respuesta uniendo todas sus partes
-            mensaje_respuesta = str.encode(linea_inicial + cabecera + "\n" + contenido)
-            clientsocket.send(mensaje_respuesta)
-            clientsocket.close()
-        #return
+        return
 
 
 # ----------------------------------
