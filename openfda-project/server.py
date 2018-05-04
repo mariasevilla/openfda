@@ -29,7 +29,9 @@ def search_drug():
 @app.route("/searchCompany")
 def search_company():
     nombre = request.args.get('company')
-    return "searchcompany" + nombre
+    resultado = datos("/drug/label.json?search=active_ingredient:" + nombre+ "&limit=10")
+    mi_html = jsontohtml(resultado)
+    return mi_html
 
 def datos(resultado):
 
