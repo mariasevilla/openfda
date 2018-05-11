@@ -78,7 +78,7 @@ class TestOpenFDA(unittest.TestCase):
     """ Automatic testing for OpenFDA web server main features """
     WEBSERVER_PROC = None
     PORT_BUSY = False
-    TEST_PORT = 8000
+    TEST_PORT = 8001
     TEST_DRUG = 'Aspirin'
     TEST_COMPANY = 'Bayer'
     TEST_ACTIONS = ['listDrugs', 'searchDrug', 'listCompanies', 'searchCompany', 'listWarnings']

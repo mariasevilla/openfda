@@ -28,8 +28,8 @@ def search_drug():
 
 @app.route("/searchCompany")
 def search_company():
-    nombre = request.args.get('company')
-    resultado = datos("/drug/label.json?search=active_ingredient:" + nombre+ "&limit=10")
+    nombre = request.args.get('manufacturer_name').replace(" ","%20")
+    resultado = datos("/drug/label.json?search=manufacturer_name:"+nombre+"&limit=10")
     mi_html = jsontohtml(resultado)
     return mi_html
 
@@ -78,4 +78,4 @@ def jsontohtml(info):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=8008)
+    app.run(host='0.0.0.0',port=8000)
