@@ -10,17 +10,19 @@ app = Flask(__name__)
 @app.route("/listDrug")
 def get_listdrug():
 
-    #limite= request.args.get('limit')
-    return jsontohtml()
-
+    limite = request.args.get('limit').replace(" ", "%20")
+    resultado = datos("/drug/label.json?limit="+limite)
+    mi_html = jsontohtml(resultado)
+    return mi_html
 
 @app.route("/listCompanies")
 def get_listcomp():
     return "listcompanies"
 
+
 @app.route("/searchDrugs")
 def search_drug():
-
+    #limite = request.args.get('limit')
     ingrediente = request.args.get('active_ingredient').replace(" ","%20")
     resultado =  datos("/drug/label.json?search=active_ingredient:"+ingrediente+"&limit=10")
     mi_html= jsontohtml(resultado)
@@ -28,6 +30,7 @@ def search_drug():
 
 @app.route("/searchCompany")
 def search_company():
+
     nombre = request.args.get('manufacturer_name').replace(" ","%20")
     resultado = datos("/drug/label.json?search=manufacturer_name:"+nombre+"&limit=10")
     mi_html = jsontohtml(resultado)
@@ -88,10 +91,14 @@ def entrada():
     inicio= """<!DOCTYPE html>
     <html>
     <body>
-    <h2>Medicamento</2>
+    <h2><b><u>Medicamento:</b></u></2>
     <form action="/searchDrugs"
-    Medicamento:<br>
+    <br>
+    <small>Ingrediente activo:</small>
     <input type="text" name="active_ingredient" value="">
+    <br>
+    <small>Limite:</small>
+    <input type="text" name="limite" value="">
     <br>
     <input type="submit" value="Submit">
     </form>
@@ -101,10 +108,14 @@ def entrada():
     inicio += """<!DOCTYPE html>
         <html>
         <body>
-        <h2>Company</2>
+        <h2><b><u>Company</b></u></2>
         <form action="/searchCompany"
         Medicamento:<br>
+        <small>Nombre:</small>
         <input type="text" name="manufacturer_name" value="">
+        <br>
+        <small>Limite:</small>
+        <input type="text" name="limite" value="">
         <br>
         <input type="submit" value="Submit">
         </form>
@@ -114,9 +125,10 @@ def entrada():
     inicio += """<!DOCTYPE html>
         <html>
         <body>
-        <h2>Listado de Medicamentos</2>
+        <h2><b><u>Listado de Medicamentos</b></u></2>
         <form action="/listDrug"
         Medicamento:<br>
+        <small>Limite:</small>
         <input type="text" name="limite" value="">
         <br>
         <input type="submit" value="Submit">
@@ -126,9 +138,10 @@ def entrada():
     inicio += """<!DOCTYPE html>
        <html>
        <body>
-       <h2>Listado de Empresas</2>
+       <h2><b><u>Listado de Empresas</b></u></2>
        <form action="/listCompanies"
        Medicamento:<br>
+       <small>Limite:</small>
        <input type="text" name="limite" value="">
        <br>
        <input type="submit" value="Submit">
