@@ -17,7 +17,10 @@ def get_listdrug():
 
 @app.route("/listCompanies")
 def get_listcomp():
-    return "listcompanies"
+    limit = request.args.get('limit')
+    resultado = datos2("/drug/label.json?&limit=" + limit)
+    mi_html = jsontohtml(resultado)
+    return mi_html
 
 
 @app.route("/searchDrugs")
@@ -32,7 +35,7 @@ def search_drug():
 def search_company():
     limit = request.args.get('limit')
     nombre = request.args.get('manufacturer_name').replace(" ","%20")
-    resultado = datos1("/drug/label.json?search=manufacturer_name:"+nombre+"&limit="+limit)
+    resultado = datos2("/drug/label.json?search=manufacturer_name:"+nombre+"&limit="+limit)
     mi_html = jsontohtml(resultado)
     return mi_html
 
