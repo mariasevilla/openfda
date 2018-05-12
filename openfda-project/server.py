@@ -33,6 +33,9 @@ def search_company():
     mi_html = jsontohtml(resultado)
     return mi_html
 
+
+
+
 def datos(resultado):
 
     headers = {'User-Agent': 'http-client'}
@@ -71,11 +74,69 @@ def jsontohtml(info):
             <h1>Informacion sobre medicamentos</h2>
             <p></p>
         """
-    mensaje += info #datos(datos sacados de la apirest)
+    for med in info:
+        """<ul>
+        <li>"""
+        mensaje += med #datos(datos sacados de la apirest)
+        """</li></ul>"""
     mensaje += """</br></body></html>"""
 
     return mensaje
 
+@app.route("/")
+def entrada():
+    inicio= """<!DOCTYPE html>
+    <html>
+    <body>
+    <h2>Medicamento</2>
+    <form action="/searchDrugs"
+    Medicamento:<br>
+    <input type="text" name="active_ingredient" value="">
+    <br>
+    <input type="submit" value="Submit">
+    </form>
+    </body>
+    </html>"""
+
+    inicio += """<!DOCTYPE html>
+        <html>
+        <body>
+        <h2>Company</2>
+        <form action="/searchCompany"
+        Medicamento:<br>
+        <input type="text" name="manufacturer_name" value="">
+        <br>
+        <input type="submit" value="Submit">
+        </form>
+        </body>
+        </html>"""
+
+    inicio += """<!DOCTYPE html>
+        <html>
+        <body>
+        <h2>Listado de Medicamentos</2>
+        <form action="/listDrug"
+        Medicamento:<br>
+        <input type="text" name="limite" value="">
+        <br>
+        <input type="submit" value="Submit">
+        </form>
+        </body>
+        </html>"""
+    inicio += """<!DOCTYPE html>
+       <html>
+       <body>
+       <h2>Listado de Empresas</2>
+       <form action="/listCompanies"
+       Medicamento:<br>
+       <input type="text" name="limite" value="">
+       <br>
+       <input type="submit" value="Submit">
+       </form>
+       </body>
+       </html>"""
+    return inicio
+
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=8000)
+    app.run(port=8000)
