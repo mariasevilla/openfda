@@ -3,6 +3,7 @@ from flask import request
 import socket
 import http.client
 import json
+import socket
 
 app = Flask(__name__)
 
@@ -39,6 +40,16 @@ def search_company():
     mi_html = jsontohtml(resultado)
     return mi_html
 
+#@app.route("/secret")
+#def secret(clientsocket):
+    #linea_inicial = "HTTP/1.1 401 Unauthorized"
+    #cabecera = "Content-Type: text/html\n"
+    #cabecera += "WWW-Authenticate: Basic realm=Access to staging site"
+
+    #mensaje_respuesta = str.encode(linea_inicial + cabecera + "\n")
+    #clientsocket.send(mensaje_respuesta)
+    #clientsocket.close()
+#@app.route("/redirect")
 
 
 
@@ -66,7 +77,7 @@ def datos1(resultado):
                 info += str(drug['openfda']['generic_name'])
                 info += "</br>"
             else:
-                info+="No tenemos información"
+                info+="Desconocida"
                 info += "</br>"
     return info
 
@@ -94,7 +105,7 @@ def datos2(resultado):
                 info += str(drug['openfda']['manufacturer_name'])
                 info += "</br>"
             else:
-                info+="No tenemos información"
+                info+="Desconocida"
                 info += "</br>"
     return info
 
