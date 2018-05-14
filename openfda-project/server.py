@@ -1,12 +1,13 @@
 from flask import Flask, redirect
 from flask import request
-
+import flask
 import json
+import http.client
 
 app = Flask(__name__)
 
 
-@app.route("/listDrug",methods = ['GET'])
+@app.route("/listDrugs")
 def get_listdrug():
 
     limit = request.args.get('limit')
@@ -14,7 +15,7 @@ def get_listdrug():
     mi_html = jsontohtml(resultado)
     return mi_html
 
-@app.route("/listCompanies",methods = ['GET'])
+@app.route("/listCompanies")
 def get_listcomp():
     limit = request.args.get('limit')
     resultado = datos2("/drug/label.json?&limit=" + limit)
@@ -22,19 +23,19 @@ def get_listcomp():
     return mi_html
 
 
-@app.route("/searchDrugs",methods = ['GET'])
+@app.route("/searchDrug")
 def search_drug():
-    limit = request.args.get('limit')
+    #limit = request.args.get('limit')
     ingrediente = request.args.get('active_ingredient').replace(" ","%20")
-    resultado =  datos1("/drug/label.json?search=active_ingredient:"+ingrediente+"&limit="+limit)
+    resultado =  datos1("/drug/label.json?search=active_ingredient:"+ingrediente+"&limit=10")
     mi_html= jsontohtml(resultado)
     return mi_html
 
-@app.route("/searchCompany",methods = ['GET'])
+@app.route("/searchCompany")
 def search_company():
-    limit = request.args.get('limit')
+    #limit = request.args.get('limit')
     nombre = request.args.get('manufacturer_name').replace(" ","%20")
-    resultado = datos2("/drug/label.json?search=manufacturer_name:"+nombre+"&limit="+limit)
+    resultado = datos2("/drug/label.json?search=manufacturer_name:"+nombre+"&limit=10")
     mi_html = jsontohtml(resultado)
     return mi_html
 
@@ -129,13 +130,10 @@ def entrada():
     <body>
     <body style='background-color: lightblue'>
     <h2><b>1. <u>Medicamento:</b></u></2>
-    <form action="/searchDrugs"
+    <form action="searchDrug"
     <br>
     <small>Ingrediente activo:</small>
     <input type="text" name="active_ingredient" value="">
-    <br>
-    <small>Limite:</small>
-    <input type="text" name="limit" value="">
     <br>
     <input type="submit" value="Submit">
     </form>
@@ -146,13 +144,10 @@ def entrada():
         <html>
         <body>
         <h2><b>2. <u>Company</b></u></2>
-        <form action="/searchCompany"
+        <form action="searchCompany"
         Medicamento:<br>
         <small>Nombre:</small>
         <input type="text" name="manufacturer_name" value="">
-        <br>
-        <small>Limite:</small>
-        <input type="text" name="limit" value="">
         <br>
         <input type="submit" value="Submit">
         </form>
@@ -163,7 +158,7 @@ def entrada():
         <html>
         <body>
         <h2><b>3. <u>Listado de Medicamentos</b></u></2>
-        <form action="/listDrug"
+        <form action="listDrugs"
         Medicamento:<br>
         <small>Limite:</small>
         <input type="text" name="limit" value="">
@@ -176,7 +171,7 @@ def entrada():
        <html>
        <body>
        <h2><b>4. <u>Listado de Empresas</b></u></2>
-       <form action="/listCompanies"
+       <form action="listCompanies"
        Medicamento:<br>
        <small>Limite:</small>
        <input type="text" name="limit" value="">
