@@ -1,15 +1,12 @@
-from flask import Flask
+from flask import Flask, redirect
 from flask import request
-import socket
-import http.client
+
 import json
-import socketserver
-import socket
-socketserver.TCPServer.allow_reuse_address = True
+
 app = Flask(__name__)
 
 
-@app.route("/listDrug")
+@app.route("/listDrug",methods = ['GET'])
 def get_listdrug():
 
     limit = request.args.get('limit')
@@ -17,7 +14,7 @@ def get_listdrug():
     mi_html = jsontohtml(resultado)
     return mi_html
 
-@app.route("/listCompanies")
+@app.route("/listCompanies",methods = ['GET'])
 def get_listcomp():
     limit = request.args.get('limit')
     resultado = datos2("/drug/label.json?&limit=" + limit)
@@ -25,7 +22,7 @@ def get_listcomp():
     return mi_html
 
 
-@app.route("/searchDrugs")
+@app.route("/searchDrugs",methods = ['GET'])
 def search_drug():
     limit = request.args.get('limit')
     ingrediente = request.args.get('active_ingredient').replace(" ","%20")
@@ -33,7 +30,7 @@ def search_drug():
     mi_html= jsontohtml(resultado)
     return mi_html
 
-@app.route("/searchCompany")
+@app.route("/searchCompany",methods = ['GET'])
 def search_company():
     limit = request.args.get('limit')
     nombre = request.args.get('manufacturer_name').replace(" ","%20")
@@ -41,16 +38,15 @@ def search_company():
     mi_html = jsontohtml(resultado)
     return mi_html
 
-#@app.route("/secret")
-#def secret(clientsocket):
-    #linea_inicial = "HTTP/1.1 401 Unauthorized"
-    #cabecera = "Content-Type: text/html\n"
-    #cabecera += "WWW-Authenticate: Basic realm=Access to staging site"
+@app.errorhandler(404)
+def error404(e):
+    mensaje_error = ''' 
+    <html><head><title>OpenFDA</title></head>
+    <body><ul>Error 404: La página que busca no se encuentra</ul></body>
+    </html>
+    '''
+    return mensaje_error
 
-    #mensaje_respuesta = str.encode(linea_inicial + cabecera + "\n")
-    #clientsocket.send(mensaje_respuesta)
-    #clientsocket.close()
-#@app.route("/redirect")
 
 
 
@@ -193,4 +189,4 @@ def entrada():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1",port=8013)
+    app.run(host="127.0.0.1",port=8000)
