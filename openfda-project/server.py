@@ -79,7 +79,7 @@ def datos1(resultado):
             else:
                 info+="Desconocida"
                 info += "</br>"
-    return info
+    return "<ul><li>{}</li></ul>".format(info)
 
 def datos2(resultado):
 
@@ -107,22 +107,20 @@ def datos2(resultado):
             else:
                 info+="Desconocida"
                 info += "</br>"
-    return info
+    return "<ul><li>{}</li></ul>".format(info)
 
 
 def jsontohtml(info):
     mensaje = """
           <!doctype html>
           <html>
-          <body style='background-color: lightblue'>
+          <body style='background-color: lightgreen'>
             <h1>Informacion sobre medicamentos</h2>
             <p></p>
         """
-    for med in info:
-        """<ul>
-        <li>"""
-        mensaje += med #datos(datos sacados de la apirest)
-        """</li></ul>"""
+
+    mensaje += info #datos(datos sacados de la apirest)
+
     mensaje += """</br></body></html>"""
 
     return mensaje
@@ -132,6 +130,7 @@ def entrada():
     inicio= """<!DOCTYPE html>
     <html>
     <body>
+    <body style='background-color: lightblue'>
     <h2><b><u>Medicamento:</b></u></2>
     <form action="/searchDrugs"
     <br>
@@ -193,4 +192,4 @@ def entrada():
 
 
 if __name__ == "__main__":
-    app.run(port=8000)
+    app.run(host="127.0.0.1",port=8000)
