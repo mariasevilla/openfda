@@ -72,12 +72,14 @@ def datos1(resultado):
         for drug in drugs['results']:
             num +=1
             if 'generic_name' in drug['openfda']:
+                info += "<li>"
                 info += str(drug['openfda']['generic_name'])
-                info += "</br>"
+                info += "</li>"
             else:
+                info += "<li>"
                 info+="Desconocida"
-                info += "</br>"
-    return "<ul><li>{}</li></ul>".format(info)
+                info += "</li>"
+    return info
 
 def datos2(resultado):
 
@@ -97,15 +99,19 @@ def datos2(resultado):
     num = 0
     info=""
     if "results" in drugs:
+
         for drug in drugs['results']:
             num +=1
             if 'manufacturer_name' in drug['openfda']:
+                info += "<li>"
                 info += str(drug['openfda']['manufacturer_name'])
-                info += "</br>"
+                info += "</li>"
             else:
+                info += "<li>"
                 info+="Desconocida"
-                info += "</br>"
-    return "<ul><li>{}</li></ul>".format(info)
+                info += "</li>"
+
+    return info #"<ul><li>{}</li></ul>".format(info)
 
 
 def jsontohtml(info):
@@ -115,11 +121,12 @@ def jsontohtml(info):
           <body style='background-color: lightgreen'>
             <h1>Informacion sobre medicamentos</h2>
             <p></p>
+        <ul>
         """
 
     mensaje += info #datos(datos sacados de la apirest)
 
-    mensaje += """</br></body></html>"""
+    mensaje += """</ul></body></html>"""
 
     return mensaje
 
