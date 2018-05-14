@@ -132,7 +132,7 @@ def entrada():
     <html>
     <body>
     <body style='background-color: lightblue'>
-    <h2><b><u>1.Medicamento:</b></u></2>
+    <h2><b>1. <u>Medicamento:</b></u></2>
     <form action="/searchDrugs"
     <br>
     <small>Ingrediente activo:</small>
@@ -149,7 +149,7 @@ def entrada():
     inicio += """<!DOCTYPE html>
         <html>
         <body>
-        <h2><b><u>2.Company</b></u></2>
+        <h2><b>2. <u>Company</b></u></2>
         <form action="/searchCompany"
         Medicamento:<br>
         <small>Nombre:</small>
@@ -166,7 +166,7 @@ def entrada():
     inicio += """<!DOCTYPE html>
         <html>
         <body>
-        <h2><b><u>3.Listado de Medicamentos</b></u></2>
+        <h2><b>3. <u>Listado de Medicamentos</b></u></2>
         <form action="/listDrug"
         Medicamento:<br>
         <small>Limite:</small>
@@ -179,7 +179,7 @@ def entrada():
     inicio += """<!DOCTYPE html>
        <html>
        <body>
-       <h2><b><u>4.Listado de Empresas</b></u></2>
+       <h2><b>4. <u>Listado de Empresas</b></u></2>
        <form action="/listCompanies"
        Medicamento:<br>
        <small>Limite:</small>
@@ -193,4 +193,4 @@ def entrada():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1",port=8012)
+    app.run(host="127.0.0.1",port=8013)
