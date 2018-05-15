@@ -39,6 +39,14 @@ def search_company():
     mi_html = jsontohtml(resultado)
     return mi_html
 
+@app.route("/listWarnings")
+def get_listwarn():
+    limit = request.args.get('limit')
+    resultado = datos3("/drug/label.json?&limit=" + limit)
+    mi_html = jsontohtml(resultado)
+    return mi_html
+
+
 @app.errorhandler(404)
 def error404(e):
     mensaje_error = ''' 
@@ -113,6 +121,39 @@ def datos2(resultado):
 
     return info #"<ul><li>{}</li></ul>".format(info)
 
+def datos3(resultado):
+
+    headers = {'User-Agent': 'http-client'}
+    conn = http.client.HTTPSConnection("api.fda.gov")
+    #conn.request("GET", "/drug/label.json?&limit="+limite, None, headers)
+    conn.request("GET",resultado, None, headers)
+
+    info = conn.getresponse()
+
+    print(info.status, info.reason)
+    drugs_raw = info.read().decode("utf-8")
+    conn.close()
+
+    drugs = json.loads(drugs_raw)
+
+    num = 0
+    info=""
+    for drug in drugs['results']:
+        if 'warnings' in drug:
+            info += "<li>"
+            info += str(drug['warnings'])
+            info += "</li>"
+        else:
+            info += "<li>"
+            info += "Desconocida"
+            info += "</li>"
+
+
+
+
+
+
+    return info
 
 def jsontohtml(info):
     mensaje = """
@@ -179,6 +220,19 @@ def entrada():
        <body>
        <h2><b>4. <u>Listado de Empresas</b></u></2>
        <form action="listCompanies"
+       Medicamento:<br>
+       <small>Limite:</small>
+       <input type="text" name="limit" value="">
+       <br>
+       <input type="submit" value="Submit">
+       </form>
+       </body>
+       </html>"""
+    inicio += """<!DOCTYPE html>
+       <html>
+       <body>
+       <h2><b>5. <u>Listado de Advertencias</b></u></2>
+       <form action="listWarnings"
        Medicamento:<br>
        <small>Limite:</small>
        <input type="text" name="limit" value="">
