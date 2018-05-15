@@ -2,7 +2,7 @@ from flask import request
 import flask
 import json
 import http.client
-from flask import abort, redirect
+from flask import abort, redirect, render_template
 from flask import Flask
 app = Flask(__name__)
 
@@ -55,16 +55,6 @@ def get_listwarn():
     return mi_html
 
 
-#@app.errorhandler(404)
-#def error404(e):
-
-    #mensaje_error = '''
-    #<html><head><title>OpenFDA</title></head>
-    #<body><ul>Error 404: La página que busca no se encuentra</ul></body>
-    #</html>
-    #'''
-    #return mensaje_error
-
 #creamos un a funcion que nos mande el error de autentificación, 401
 @app.route('/secret')
 def login():
@@ -75,8 +65,9 @@ def login():
 def ruta():
     return redirect('http://localhost:8000/', code=302)
 
-
-
+#@app.errorhandler(404)
+#def not_found(e):
+  #return render_template('404.html'), 404
 
 
 # la funcion datos1() nos conecta, segun la url que le manda cada definicion anterior, con el api.fda y nos busca la informacion que
@@ -111,7 +102,7 @@ def datos1(resultado):
                 info += "</li>"
     return info
 
-# la funcion datos1() nos conecta, segun la url que le manda cada definicion anterior, con el api.fda y nos busca la informacion que
+# la funcion datos2() nos conecta, segun la url que le manda cada definicion anterior, con el api.fda y nos busca la informacion que
 #estamos buscando, es este cado nos guarda en la variable info el nombre de cada empresa (manufacturer_name)
 def datos2(resultado):
 
@@ -145,6 +136,7 @@ def datos2(resultado):
 
     return info #"<ul><li>{}</li></ul>".format(info)
 
+#La funcion datos3() se conecta a fda y busca informacion sobre los warnings de cada medicamento
 def datos3(resultado):
 
     headers = {'User-Agent': 'http-client'}
@@ -179,6 +171,7 @@ def datos3(resultado):
 
     return info
 
+#Esta funcion  nos crea en html el mensaje de respuesta
 def jsontohtml(info):
     mensaje = """
           <!doctype html>
@@ -195,6 +188,7 @@ def jsontohtml(info):
 
     return mensaje
 
+#Esta funcion nos crea en html el formulario en el que podemos meter toda la informacion que queremos que nos busque
 @app.route("/")
 def entrada():
     inicio= """<!DOCTYPE html>
