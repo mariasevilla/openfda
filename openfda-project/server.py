@@ -33,7 +33,7 @@ def search_drug():
 @app.route("/searchCompany")
 def search_company():
     #limit = request.args.get('limit')
-    nombre = request.args.get('manufacturer_name').replace(" ","%20")
+    nombre = request.args.get('company').replace(" ","%20")
     resultado = datos2("/drug/label.json?search=manufacturer_name:"+nombre+"&limit=10")
     mi_html = jsontohtml(resultado)
     return mi_html
@@ -62,7 +62,7 @@ def login():
 
 
 @app.route('/redirect')
-def root():
+def ruta():
     return redirect('http://localhost:8000/', code=302)
 
 
@@ -206,7 +206,7 @@ def entrada():
         <form action="searchCompany"
         Medicamento:<br>
         <small>Nombre:</small>
-        <input type="text" name="manufacturer_name" value="">
+        <input type="text" name="company" value="">
         <br>
         <input type="submit" value="Submit">
         </form>
