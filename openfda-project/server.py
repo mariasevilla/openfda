@@ -46,20 +46,16 @@ def get_listwarn():
     return mi_html
 
 
-@app.errorhandler(404)
-def error404(e):
-    mensaje_error = ''' 
-    <html><head><title>OpenFDA</title></head>
-    <body><ul>Error 404: La página que busca no se encuentra</ul></body>
-    </html>
-    '''
-    return mensaje_error
+
 
 @app.route('/secret')
 def login():
     abort(401)
     this_is_never_executed()
 
+@app.route('/redirect')
+def root():
+    return redirect('http://localhost:8000/', code=302)
 
 
 
