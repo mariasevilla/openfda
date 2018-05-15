@@ -6,6 +6,7 @@ from flask import abort, redirect
 from flask import Flask
 app = Flask(__name__)
 
+#creamos una funcion para cada punto de entrega
 @app.route("/listDrugs")
 def get_listdrug():
 
@@ -24,17 +25,25 @@ def get_listcomp():
 
 @app.route("/searchDrug")
 def search_drug():
-    #limit = request.args.get('limit')
+
     ingrediente = request.args.get('active_ingredient').replace(" ","%20")
-    resultado =  datos1("/drug/label.json?search=active_ingredient:"+ingrediente+"&limit=10")
-    mi_html= jsontohtml(resultado)
+    limit = request.args.get('limit')
+    if limit:
+        resultado = datos1("/drug/label.json?search=active_ingredient:" + ingrediente + "&limit="+limit)
+        mi_html = jsontohtml(resultado)
+    else:
+        resultado =  datos1("/drug/label.json?search=active_ingredient:"+ingrediente+"&limit=10")
+        mi_html= jsontohtml(resultado)
     return mi_html
 
 @app.route("/searchCompany")
 def search_company():
-    #limit = request.args.get('limit')
+    limit = request.args.get('limit')
     nombre = request.args.get('company').replace(" ","%20")
-    resultado = datos2("/drug/label.json?search=manufacturer_name:"+nombre+"&limit=10")
+    if limit:
+        resultado = datos2("/drug/label.json?search=manufacturer_name:" + nombre + "&limit="+limit)
+    else:
+        resultado = datos2("/drug/label.json?search=manufacturer_name:"+nombre+"&limit=10")
     mi_html = jsontohtml(resultado)
     return mi_html
 
@@ -56,11 +65,12 @@ def get_listwarn():
     #'''
     #return mensaje_error
 
+#creamos un a funcion que nos mande el error de autentificación, 401
 @app.route('/secret')
 def login():
     abort(401)
 
-
+# creamos una funcion que nos redirija a nuestro formulario
 @app.route('/redirect')
 def ruta():
     return redirect('http://localhost:8000/', code=302)
@@ -69,7 +79,8 @@ def ruta():
 
 
 
-
+# la funcion datos1() nos conecta, segun la url que le manda cada definicion anterior, con el api.fda y nos busca la informacion que
+#estamos buscando, es este cado nos guarda en la variable info el nombre de cada medicamento (generic_name)
 def datos1(resultado):
 
     headers = {'User-Agent': 'http-client'}
@@ -100,6 +111,8 @@ def datos1(resultado):
                 info += "</li>"
     return info
 
+# la funcion datos1() nos conecta, segun la url que le manda cada definicion anterior, con el api.fda y nos busca la informacion que
+#estamos buscando, es este cado nos guarda en la variable info el nombre de cada empresa (manufacturer_name)
 def datos2(resultado):
 
     headers = {'User-Agent': 'http-client'}
@@ -194,6 +207,9 @@ def entrada():
     <small>Ingrediente activo:</small>
     <input type="text" name="active_ingredient" value="">
     <br>
+    <small>Limite:</small>
+    <input type="text" name="limit" value="">
+    <br>
     <input type="submit" value="Submit">
     </form>
     </body>
@@ -207,6 +223,9 @@ def entrada():
         Medicamento:<br>
         <small>Nombre:</small>
         <input type="text" name="company" value="">
+        <br>
+        <small>Limite:</small>
+        <input type="text" name="limit" value="">
         <br>
         <input type="submit" value="Submit">
         </form>
