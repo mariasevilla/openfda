@@ -1,11 +1,10 @@
-from flask import Flask, redirect
 from flask import request
 import flask
 import json
 import http.client
-
+from flask import abort, redirect, url_for
+from flask import Flask
 app = Flask(__name__)
-
 
 @app.route("/listDrugs")
 def get_listdrug():
@@ -55,6 +54,12 @@ def error404(e):
     </html>
     '''
     return mensaje_error
+
+@app.route('/secret')
+def login():
+    abort(401)
+    this_is_never_executed()
+
 
 
 
