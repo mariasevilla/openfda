@@ -2,7 +2,7 @@ from flask import request
 import flask
 import json
 import http.client
-from flask import abort, redirect, url_for
+from flask import abort, redirect
 from flask import Flask
 app = Flask(__name__)
 
@@ -59,7 +59,7 @@ def get_listwarn():
 @app.route('/secret')
 def login():
     abort(401)
-    this_is_never_executed()
+
 
 @app.route('/redirect')
 def root():
